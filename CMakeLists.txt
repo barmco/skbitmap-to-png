@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(skbitmap-to-png VERSION 0.0.1)
 
-set(CMAKE_FIND_LIBRARY_SUFFIXES .a)
+# make force to find version of static library '^'b
+set(CMAKE_FIND_LIBRARY_SUFFIXES .a ${CMAKE_FIND_LIBRARY_SUFFIXES})
 
+# xcode and their sdk is sucks, therefore send tribute for brew '^'b
 set(PNG_LIBRARIES /usr/local/opt/libpng/lib)
 set(PNG_INCLUDE_DIR /usr/local/opt/libpng/include)
 set(ZLIB_ROOT /usr/local/opt/zlib/)
@@ -18,10 +20,34 @@ if(NOT PNG_FOUND OR NOT ZLIB_FOUND)
     )
 endif()
 
+if(NOT EXISTS ${CMAKE_SOURCE_DIR}/skcms)
+    message (
+        FATAL_ERROR
+        "it seems submodule \"skcms\" ins't initialized. type following command and initialize them.\n"
+        "\"git submodule update\""
+    )
+endif()
+
+add_custom_target(skcms-object
+    COMMAND ninja -C skcms
+    COMMAND ${CMAKE_COMMAND} -E copy skcms/out/skcms.o ${CMAKE_BINARY_DIR}
+    COMMENT build skcms
+
+    BYPRODUCTS ${CMAKE_BINARY_DIR}/skcms.o
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+add_library(skcms STATIC IMPORTED GLOBAL)
+add_dependencies(skcms skcms-object)
+set_target_properties(skcms PROPERTIES
+    IMPORTED_LOCATION ${CMAKE_BINARY_DIR}/skcms.o
+)
+
 set (
     INCLUDE_DIR_SUMMARY
     
     ${PNG_INCLUDE_DIRS}
+    skcms
 )
 
 set (
@@ -34,10 +60,15 @@ set (
     LIBRARIES
 
     PNG::PNG
+    skcms
 )
 
 include_directories(${INCLUDE_DIR_SUMMARY})
 
 add_library(skbitmap-to-png SHARED ${SOURCES})
+add_dependencies(skbitmap-to-png skcms)
 
 target_link_libraries(skbitmap-to-png PUBLIC ${LIBRARIES})
+target_compile_options(skbitmap-to-png PRIVATE
+    -std=c++11
+)
