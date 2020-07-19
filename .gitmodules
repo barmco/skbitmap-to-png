@@ -1,0 +1,3 @@
+[submodule "skcms"]
+	path = skcms
+	url = https://github.com/barmco/skcms.git
