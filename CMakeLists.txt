@@ -75,5 +75,8 @@ include_directories(${INCLUDE_DIR_SUMMARY})
 
 add_library(skbitmap-to-png SHARED ${SOURCES})
 add_dependencies(skbitmap-to-png skcms)
+set_target_properties(skbitmap-to-png PROPERTIES 
+    PREFIX ""
+)
 
 target_link_libraries(skbitmap-to-png PRIVATE ${LIBRARIES})
