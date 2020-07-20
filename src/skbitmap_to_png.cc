@@ -6,7 +6,7 @@
 #include <sk_pixmap.h>
 #include <png_codec.h>
 
-#include <skbitmap-to-png.h>
+#include <skbitmap_to_png.h>
 
 extern "C" {
     TransformResult transform(int width, int height, size_t size, void *buf) {
