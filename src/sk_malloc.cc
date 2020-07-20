@@ -8,6 +8,7 @@
 #include <cstdlib>
 
 #include <sk_malloc.h>
+#include <sk_safe_math.h>
 
 static inline void sk_out_of_memory(size_t size) {
     abort();
@@ -51,4 +52,20 @@ void* sk_malloc_flags(size_t size, unsigned flags) {
     } else {
         return p;
     }
+}
+
+void* sk_calloc_throw(size_t count, size_t elemSize) {
+    return sk_calloc_throw(SkSafeMath::Mul(count, elemSize));
+}
+
+void* sk_malloc_throw(size_t count, size_t elemSize) {
+    return sk_malloc_throw(SkSafeMath::Mul(count, elemSize));
+}
+
+void* sk_realloc_throw(void* buffer, size_t count, size_t elemSize) {
+    return sk_realloc_throw(buffer, SkSafeMath::Mul(count, elemSize));
+}
+
+void* sk_malloc_canfail(size_t count, size_t elemSize) {
+    return sk_malloc_canfail(SkSafeMath::Mul(count, elemSize));
 }

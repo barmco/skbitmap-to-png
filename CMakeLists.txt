@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(skbitmap-to-png VERSION 0.0.1)
 
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 # make force to find version of static library '^'b
 set(CMAKE_FIND_LIBRARY_SUFFIXES .a ${CMAKE_FIND_LIBRARY_SUFFIXES})
 
@@ -43,6 +47,8 @@ set_target_properties(skcms PROPERTIES
     IMPORTED_LOCATION ${CMAKE_BINARY_DIR}/skcms.o
 )
 
+aux_source_directory(${CMAKE_SOURCE_DIR}/src SOURCES)
+
 set (
     INCLUDE_DIR_SUMMARY
 
@@ -55,7 +61,7 @@ set (
 set (
     SOURCES
 
-    src/skbitmap-to-png.cc
+    ${SOURCES}
 )
 
 set (
@@ -71,6 +77,3 @@ add_library(skbitmap-to-png SHARED ${SOURCES})
 add_dependencies(skbitmap-to-png skcms)
 
 target_link_libraries(skbitmap-to-png PRIVATE ${LIBRARIES})
-target_compile_options(skbitmap-to-png PRIVATE
-    -std=c++11
-)

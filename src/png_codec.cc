@@ -3,6 +3,8 @@
 #include <zlib.h>
 
 #include <sk_pixmap.h>
+#include <sk_png_encoder.h>
+
 #include <png_codec.h>
 #include <vector_wstream.h>
 

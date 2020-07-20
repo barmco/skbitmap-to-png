@@ -1,10 +1,12 @@
 #pragma once
 
+#include <cassert>
+
 #include <sk_types.h>
 #include <sk_template_fits_in.h>
 
 template <typename D, typename S> constexpr D SkTo(S s) {
-    return SkASSERT(SkTFitsIn<D>(s)),
+    return assert(SkTFitsIn<D>(s)),
            static_cast<D>(s);
 }
 
