@@ -10,7 +10,7 @@ set(CMAKE_FIND_LIBRARY_SUFFIXES .a ${CMAKE_FIND_LIBRARY_SUFFIXES})
 
 # xcode and their sdk is sucks, therefore send tribute for brew '^'b
 set(PNG_LIBRARIES /usr/local/opt/libpng/lib)
-set(PNG_INCLUDE_DIR /usr/local/opt/libpng/include)
+set(PNG_INCLUDE /usr/local/opt/libpng/include)
 set(ZLIB_ROOT /usr/local/opt/zlib/)
 
 find_package(PNG REQUIRED)
@@ -52,7 +52,7 @@ aux_source_directory(${CMAKE_SOURCE_DIR}/src SOURCES)
 set (
     INCLUDE_DIR_SUMMARY
 
-    ${PNG_INCLUDE_DIRS}
+    ${PNG_INCLUDE}
     
     src
     skcms
@@ -80,3 +80,18 @@ set_target_properties(skbitmap-to-png PROPERTIES
 )
 
 target_link_libraries(skbitmap-to-png PRIVATE ${LIBRARIES})
+
+# test
+
+add_library(skbitmap-to-png-static STATIC ${SOURCES})
+add_dependencies(skbitmap-to-png-static skcms)
+set_target_properties(skbitmap-to-png-static PROPERTIES 
+    PREFIX ""
+)
+
+target_link_libraries(skbitmap-to-png-static PRIVATE ${LIBRARIES})
+
+add_executable(rendering-test test/rendering_test.cc)
+add_dependencies(rendering-test skbitmap-to-png-static)
+
+target_link_libraries(rendering-test PRIVATE skbitmap-to-png-static)
