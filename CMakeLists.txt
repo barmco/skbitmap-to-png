@@ -45,15 +45,17 @@ set_target_properties(skcms PROPERTIES
 
 set (
     INCLUDE_DIR_SUMMARY
-    
+
     ${PNG_INCLUDE_DIRS}
+    
+    src
     skcms
 )
 
 set (
     SOURCES
 
-    src/skbitmap-to-png.cpp
+    src/skbitmap-to-png.cc
 )
 
 set (
@@ -68,7 +70,7 @@ include_directories(${INCLUDE_DIR_SUMMARY})
 add_library(skbitmap-to-png SHARED ${SOURCES})
 add_dependencies(skbitmap-to-png skcms)
 
-target_link_libraries(skbitmap-to-png PUBLIC ${LIBRARIES})
+target_link_libraries(skbitmap-to-png PRIVATE ${LIBRARIES})
 target_compile_options(skbitmap-to-png PRIVATE
     -std=c++11
 )
