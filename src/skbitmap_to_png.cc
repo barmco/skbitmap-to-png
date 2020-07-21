@@ -68,6 +68,11 @@ extern "C" TransformResult transform_to_bgra8888(int width, int height, size_t s
     };
 }
 
+extern "C" size_t compute_min_bytesize(int width, int height) {
+    auto info = SkImageInfo::MakeN32(width, height, kPremul_SkAlphaType);
+    return info.computeMinByteSize();
+}
+
 extern "C" void memfree(void *handle) {
     auto origin = reinterpret_cast<std::vector<unsigned char> *>(handle);
     delete origin;
