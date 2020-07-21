@@ -22,3 +22,9 @@ static inline void transform_scanline_BGRA(char* dst, const char* src, int width
           skcms_PixelFormat_BGRA_8888, skcms_AlphaFormat_Unpremul,
           skcms_PixelFormat_RGBA_8888, skcms_AlphaFormat_Unpremul);
 }
+
+static inline void transform_scanline_bgrA_same(char* dst, const char* src, int width, int) {
+    skcms(dst, src, width,
+        skcms_PixelFormat_BGRA_8888, skcms_AlphaFormat_PremulAsEncoded,
+        skcms_PixelFormat_BGRA_8888, skcms_AlphaFormat_Unpremul);
+}

@@ -91,7 +91,10 @@ set_target_properties(skbitmap-to-png-static PROPERTIES
 
 target_link_libraries(skbitmap-to-png-static PRIVATE ${LIBRARIES})
 
-add_executable(rendering-test test/rendering_test.cc)
-add_dependencies(rendering-test skbitmap-to-png-static)
+add_executable(transform-to-png-basic test/transform_to_png_basic.cc)
+add_dependencies(transform-to-png-basic skbitmap-to-png-static)
+target_link_libraries(transform-to-png-basic PRIVATE skbitmap-to-png-static)
 
-target_link_libraries(rendering-test PRIVATE skbitmap-to-png-static)
+add_executable(transform-to-bgra8888-basic test/transform_to_bgra8888_basic.cc)
+add_dependencies(transform-to-bgra8888-basic skbitmap-to-png-static)
+target_link_libraries(transform-to-bgra8888-basic PRIVATE skbitmap-to-png-static)
